@@ -6,7 +6,7 @@
 /*   By: fgiraud <fgiraud@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/11/27 13:17:52 by fgiraud           #+#    #+#             */
-/*   Updated: 2015/12/18 18:51:21 by ale-naou         ###   ########.fr       */
+/*   Updated: 2015/12/20 16:48:13 by ale-naou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,7 @@ typedef	struct		s_struct
 	int				y;
 	char			*mapmax;
 	int				power;
+	int				mapopti;
 
 }					t_struct;
 

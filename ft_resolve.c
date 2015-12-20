@@ -6,11 +6,51 @@
 /*   By: fgiraud <fgiraud@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/12/17 18:08:28 by fgiraud           #+#    #+#             */
-/*   Updated: 2015/12/18 18:51:27 by ale-naou         ###   ########.fr       */
+/*   Updated: 2015/12/20 16:48:09 by ale-naou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
+
+int		ft_isplacable(t_struct *global)
+{	
+	int		tmp;
+
+	tmp = 0;
+	global->i = 0;
+	global->x = 0;
+	global->y = 0;
+	while (global->y < global->nbrtetro && global->mapmax[global->i] != '\0')
+	{
+		if (global->mapmax[global->i] != '#')
+		{
+			global->x = 0;
+			tmp = global->i;
+			while (global->mapmax[tmp] != '#' &&
+				global->mapmax[tmp] != '\n' &&
+				global->mapmax[tmp] != '0' && global->x <= 2 &&
+			   	tmp + global->tab[global->y][global->y] < global->mapopti)
+			{
+				tmp = tmp + global->tab[global->y][global->x];
+				global->x++;
+			}
+			if (global->x == 3)
+			{
+				tmp = global->i;
+				global->x = 0;
+				while (global->x <= 3)
+				{
+					global->mapmax[tmp] = '#';
+					tmp = tmp + global->tab[global->y][global->x];
+					global->x++;
+				}
+				global->y++;
+			}
+		}
+		global->i++;
+	}
+	return (0);
+}
 
 void	ft_adaptcoordo(t_struct *global)
 {
@@ -36,7 +76,6 @@ void	ft_adaptcoordo(t_struct *global)
 
 int		ft_mapopti(t_struct *global, char *mapmax)
 {
-	int		mapopti;
 	int		i;
 	int		x;
 
@@ -44,8 +83,9 @@ int		ft_mapopti(t_struct *global, char *mapmax)
 	x = 0;
 	while (global->power * global->power <= global->nbrtetro * 4)
 		global->power++;
-	mapopti = global->power * global->power + global->power;
-	while (i < mapopti)
+	global->mapopti = global->power * global->power + global->power;
+	
+	while (i < global->mapopti)
 	{
 		if (x == global->power)
 		{
@@ -62,7 +102,7 @@ int		ft_mapopti(t_struct *global, char *mapmax)
 	}
 	mapmax[i] = '\0';
 	ft_putstr("Sortie mapopti\n");
-	return (mapopti);
+	return (global->mapopti);
 }
 
 int		ft_resolve(char *buf, t_struct *global)
@@ -82,6 +122,11 @@ int		ft_resolve(char *buf, t_struct *global)
 	ft_putchar('\n');
 	ft_putnbr(global->y);
 	ft_putchar('\n');
+	ft_putnbr(global->mapopti);
+	ft_putchar('\n');
+	ft_putnbr(mapopti);
+	ft_putchar('\n');
+
 	global->y = 0;
 	while (global->y < global->nbrtetro)
 	{
@@ -94,6 +139,8 @@ int		ft_resolve(char *buf, t_struct *global)
 		ft_putchar('\n');
 		global->y++;
 	}
+	ft_putstr(mapmax);
+	ft_isplacable(global);
 	ft_putstr(mapmax);
 	return (0);
 }

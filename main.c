@@ -6,7 +6,7 @@
 /*   By: fgiraud <fgiraud@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/12/07 11:15:48 by fgiraud           #+#    #+#             */
-/*   Updated: 2015/12/18 18:51:23 by ale-naou         ###   ########.fr       */
+/*   Updated: 2015/12/20 16:48:11 by ale-naou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,7 @@ void	ft_init(t_struct *global)
 	global->y = 0;
 	global->col = 0;
 	global->power = 0;
+	global->mapopti = 0;
 }
 
 int		main(int ac, char *av[])
