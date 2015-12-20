@@ -6,7 +6,7 @@
 /*   By: fgiraud <fgiraud@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/12/17 18:08:28 by fgiraud           #+#    #+#             */
-/*   Updated: 2015/12/20 16:48:09 by ale-naou         ###   ########.fr       */
+/*   Updated: 2015/12/20 20:07:18 by ale-naou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,8 +26,8 @@ int		ft_isplacable(t_struct *global)
 		{
 			global->x = 0;
 			tmp = global->i;
-			while (global->mapmax[tmp] != '#' &&
-				global->mapmax[tmp] != '\n' &&
+			while (global->mapmax[tmp] == '.'/*global->mapmax[tmp] != '#' &&
+				global->mapmax[tmp] != '\n'*/ &&
 				global->mapmax[tmp] != '0' && global->x <= 2 &&
 			   	tmp + global->tab[global->y][global->y] < global->mapopti)
 			{
@@ -40,11 +40,12 @@ int		ft_isplacable(t_struct *global)
 				global->x = 0;
 				while (global->x <= 3)
 				{
-					global->mapmax[tmp] = '#';
+					global->mapmax[tmp] = global->c;
 					tmp = tmp + global->tab[global->y][global->x];
 					global->x++;
 				}
 				global->y++;
+				global->c++;
 			}
 		}
 		global->i++;
@@ -70,11 +71,10 @@ void	ft_adaptcoordo(t_struct *global)
 			}
 		}
 		global->y++;
-		ft_putstr("Sortie adaptcoordo\n");
 	}
 }
 
-int		ft_mapopti(t_struct *global, char *mapmax)
+int		ft_mapopti(t_struct *global)
 {
 	int		i;
 	int		x;
@@ -89,47 +89,52 @@ int		ft_mapopti(t_struct *global, char *mapmax)
 	{
 		if (x == global->power)
 		{
-			mapmax[i] = '\n';
+			global->mapmax[i] = '\n';
 			i++;
 			x = 0;
 		}
 		else
 		{
-			mapmax[i] = '.';
+			global->mapmax[i] = '.';
 			i++;
 			x++;
 		}
 	}
-	mapmax[i] = '\0';
-	ft_putstr("Sortie mapopti\n");
+	global->mapmax[i] = '\0';
 	return (global->mapopti);
 }
 
 int		ft_resolve(char *buf, t_struct *global)
 {
-	char	*mapmax;
 	int		mapopti;
 
-	if ((mapmax = (char *)malloc(sizeof(*mapmax) * 16 * 17)) == NULL)
+	if (!(global->mapmax = (char *)malloc(sizeof(*global->mapmax) * 16 * 17)))
 		return (1);
-	mapopti = ft_mapopti(global, mapmax);
+	mapopti = ft_mapopti(global);
 	ft_adaptcoordo(global);
+	ft_putstr("Global->line : ");
 	ft_putnbr(global->line);
 	ft_putchar('\n');
+	ft_putstr("Global->col : ");
 	ft_putnbr(global->col);
 	ft_putchar('\n');
+	ft_putstr("Global->nbrtetro : ");
 	ft_putnbr(global->nbrtetro);
 	ft_putchar('\n');
+	ft_putstr("Global->y : ");
 	ft_putnbr(global->y);
 	ft_putchar('\n');
+	ft_putstr("Global->mapopti : ");
 	ft_putnbr(global->mapopti);
 	ft_putchar('\n');
+	ft_putstr("mapopti : ");
 	ft_putnbr(mapopti);
 	ft_putchar('\n');
 
 	global->y = 0;
 	while (global->y < global->nbrtetro)
 	{
+		ft_putstr("Coordonnees : ");
 		global->x = 0;
 		while (global->x < 3)
 		{
@@ -139,8 +144,7 @@ int		ft_resolve(char *buf, t_struct *global)
 		ft_putchar('\n');
 		global->y++;
 	}
-	ft_putstr(mapmax);
 	ft_isplacable(global);
-	ft_putstr(mapmax);
+	ft_putstr(global->mapmax);
 	return (0);
 }
