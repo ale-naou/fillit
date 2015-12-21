@@ -6,7 +6,7 @@
 /*   By: fgiraud <fgiraud@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/11/27 13:17:52 by fgiraud           #+#    #+#             */
-/*   Updated: 2015/12/20 20:07:23 by ale-naou         ###   ########.fr       */
+/*   Updated: 2015/12/21 21:01:44 by ale-naou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,12 +33,14 @@ typedef	struct		s_struct
 	int				power;
 	int				mapopti;
 	int				c;
+	int				ctetro;
 
 }					t_struct;
 
 void				ft_putchar(char c);
 void				ft_putnbr(int n);
 void				ft_putstr(char const *str);
+char				*ft_strnew(size_t size);
 int					ft_strlen(char *str);
 
 void				ft_init(t_struct *global);
