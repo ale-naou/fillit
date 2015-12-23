@@ -6,7 +6,7 @@
 /*   By: fgiraud <fgiraud@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/12/17 18:08:28 by fgiraud           #+#    #+#             */
-/*   Updated: 2015/12/21 21:01:37 by ale-naou         ###   ########.fr       */
+/*   Updated: 2015/12/22 20:38:15 by ale-naou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,6 @@ int		ft_affinfos(t_struct *global)
 	ft_putstr("Global->mapopti : ");
 	ft_putnbr(global->mapopti);
 	ft_putchar('\n');
-
 	global->y = 0;
 	while (global->y < global->nbrtetro)
 	{
@@ -78,7 +77,7 @@ int		ft_isplacable(t_struct *global)
 			global->x = 0;
 			tmp = global->i;
 			while (global->mapmax[tmp] == '.' && global->x <= 2 &&
-			   	tmp + global->tab[global->y][global->x] < global->mapopti)
+					tmp + global->tab[global->y][global->x] < global->mapopti)
 			{
 				tmp = tmp + global->tab[global->y][global->x];
 				global->x++;
@@ -117,27 +116,26 @@ void	ft_adaptcoordo(t_struct *global)
 int		ft_mapopti(t_struct *global)
 {
 	int		i;
-	int		x;
 
 	i = 0;
-	x = 0;
+	global->x = 0;
 	while (global->power * global->power <= global->nbrtetro * 4)
 		global->power++;
 	global->mapopti = global->power * global->power + global->power;
 	
 	while (i < global->mapopti)
 	{
-		if (x == global->power)
+		if (global->x == global->power)
 		{
 			global->mapmax[i] = '\n';
 			i++;
-			x = 0;
+			global->x = 0;
 		}
 		else
 		{
 			global->mapmax[i] = '.';
 			i++;
-			x++;
+			global->x++;
 		}
 	}
 	global->mapmax[i] = '\0';
@@ -146,7 +144,6 @@ int		ft_mapopti(t_struct *global)
 
 int		ft_resolve(char *buf, t_struct *global)
 {
-
 	global->mapmax = ft_strnew(16 * 17);
 	ft_mapopti(global);
 	ft_adaptcoordo(global);

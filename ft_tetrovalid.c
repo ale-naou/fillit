@@ -6,7 +6,7 @@
 /*   By: ale-naou <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/12/16 17:27:51 by ale-naou          #+#    #+#             */
-/*   Updated: 2015/12/21 21:01:38 by ale-naou         ###   ########.fr       */
+/*   Updated: 2015/12/22 20:38:14 by ale-naou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,11 +14,10 @@
 
 static int		ft_testlength(t_struct *global)
 {
-	int x;
 	int x1;
 
-	x = 0;
 	x1 = 0;
+	global->x = 0;
 	if (global->counti == 20 && global->nbrhash != 4)
 		return (1);
 	else if (global->counti == 20)
@@ -28,11 +27,12 @@ static int		ft_testlength(t_struct *global)
 		global->col = 0;
 		if (global->y < global->nbrtetro)
 		{
+		//	global->tab[global->y][0] = global->i;
 			while (x1 < 3)
 			{
 				global->tab[global->y][x1] =
-					global->tabhash[x + 1] - global->tabhash[x];
-				x++;
+				global->tabhash[global->x + 1] - global->tabhash[global->x];
+				global->x++;
 				x1++;
 			}
 			global->y++;
@@ -51,8 +51,8 @@ static int		ft_testcoordo(char *buf, t_struct *global)
 					buf[global->tabhash[global->col] - 1] != '#' &&
 					buf[global->tabhash[global->col] + 5] != '#' &&
 					buf[global->tabhash[global->col] + 1] != '#') ||
-				(global->col == 2 && buf[global->tabhash[2] - 1] != '#' &&
-				 buf[global->tabhash[2] - 5] != '#'))
+					(global->col == 2 && buf[global->tabhash[2] - 1] != '#' &&
+					buf[global->tabhash[2] - 5] != '#'))
 			return (1);
 		global->col++;
 	}
@@ -130,7 +130,7 @@ int				ft_tetrosvalid(char *buf, t_struct *global)
 		return (1);
 	while (global->y < global->nbrtetro)
 	{
-		global->tab[global->y] = (int *)malloc(sizeof(int) * 3);
+		global->tab[global->y] = (int *)malloc(sizeof(int) * 4);
 		global->y++;
 	}
 	if (ft_formsvalid(buf, global) != 0)
