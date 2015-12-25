@@ -6,7 +6,7 @@
 /*   By: fgiraud <fgiraud@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/12/07 11:15:48 by fgiraud           #+#    #+#             */
-/*   Updated: 2015/12/22 20:38:17 by ale-naou         ###   ########.fr       */
+/*   Updated: 2015/12/25 19:58:19 by ale-naou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,8 +26,7 @@ void	ft_init(t_struct *global)
 	global->col = 0;
 	global->power = 0;
 	global->mapopti = 0;
-	global->c = 'A';
-	global->ctetro = 0;
+	global->imap = 0;
 }
 
 int		main(int ac, char *av[])
@@ -51,7 +50,7 @@ int		main(int ac, char *av[])
 			return (ft_error(1));
 		if (ft_tetrosvalid(buf, global) != 0)
 			return (ft_error(1));
-		if (ft_resolve(buf, global) != 0)
+		if (ft_resolve(global, 0) != 0)
 			return (ft_error(1));
 		ft_putstr("\nici le futur resultat\n");
 		if (close(fd) == -1)
