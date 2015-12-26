@@ -6,7 +6,7 @@
 /*   By: fgiraud <fgiraud@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/12/07 11:15:48 by fgiraud           #+#    #+#             */
-/*   Updated: 2015/12/25 19:58:19 by ale-naou         ###   ########.fr       */
+/*   Updated: 2015/12/26 21:33:43 by ale-naou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,9 +50,8 @@ int		main(int ac, char *av[])
 			return (ft_error(1));
 		if (ft_tetrosvalid(buf, global) != 0)
 			return (ft_error(1));
-		if (ft_resolve(global, 0) != 0)
-			return (ft_error(1));
-		ft_putstr("\nici le futur resultat\n");
+		global->mapmax = ft_strnew(16 * 17);		
+		ft_resolve(global);
 		if (close(fd) == -1)
 			return (ft_error(1));
 	}

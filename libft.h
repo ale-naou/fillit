@@ -6,7 +6,7 @@
 /*   By: fgiraud <fgiraud@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/11/27 13:17:52 by fgiraud           #+#    #+#             */
-/*   Updated: 2015/12/25 20:10:03 by ale-naou         ###   ########.fr       */
+/*   Updated: 2015/12/26 20:38:24 by ale-naou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,6 +46,7 @@ void				ft_init(t_struct *global);
 int					ft_error(int n);
 int					ft_tetrosvalid(char *buf, t_struct *global);
 int					ft_linesvalid(char *buf, t_struct *global);
-int					ft_resolve(t_struct *global, int ctetro);
+int					ft_recursive(t_struct *global, int ctetro);
+void				ft_resolve(t_struct *global);
 
 #endif
