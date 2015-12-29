@@ -6,7 +6,7 @@
 /*   By: ale-naou <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/12/16 17:27:51 by ale-naou          #+#    #+#             */
-/*   Updated: 2015/12/26 19:39:46 by ale-naou         ###   ########.fr       */
+/*   Updated: 2015/12/29 17:50:49 by ale-naou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,6 @@ static int		ft_testlength(t_struct *global)
 		global->col = 0;
 		if (global->y < global->nbrtetro)
 		{
-		//	global->tab[global->y][0] = global->i;
 			while (x1 < 3)
 			{
 				global->tab[global->y][x1] =
@@ -52,7 +51,8 @@ static int		ft_testcoordo(char *buf, t_struct *global)
 					buf[global->tabhash[global->col] + 5] != '#' &&
 					buf[global->tabhash[global->col] + 1] != '#') ||
 					(global->col == 2 && buf[global->tabhash[2] - 1] != '#' &&
-					buf[global->tabhash[2] - 5] != '#'))
+					buf[global->tabhash[2] - 5] != '#' &&
+					buf[global->tabhash[2] - 4] != '#'))
 			return (1);
 		global->col++;
 	}

@@ -6,7 +6,7 @@
 /*   By: fgiraud <fgiraud@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/12/17 18:08:28 by fgiraud           #+#    #+#             */
-/*   Updated: 2015/12/27 18:54:24 by ale-naou         ###   ########.fr       */
+/*   Updated: 2015/12/29 18:28:14 by ale-naou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,11 @@
 
 int		ft_affinfos(t_struct *global)
 {
+	int		x;
+	int		y;
+
+	x = 0;
+	y = 0;
 	ft_putstr("Global->line : ");
 	ft_putnbr(global->line);
 	ft_putchar('\n');
@@ -29,20 +34,18 @@ int		ft_affinfos(t_struct *global)
 	ft_putstr("Global->mapopti : ");
 	ft_putnbr(global->mapopti);
 	ft_putchar('\n');
-	global->y = 0;
-	while (global->y < global->nbrtetro)
+	while (y < global->nbrtetro)
 	{
 		ft_putstr("Coordonnees : ");
-		global->x = 0;
-		while (global->x < 3)
+		x = 0;
+		while (x < 3)
 		{
-			ft_putnbr(global->tab[global->y][global->x]);
-			global->x++;
+			ft_putnbr(global->tab[y][x]);
+			x++;
 		}
 		ft_putchar('\n');
-		global->y++;
+		y++;
 	}
-
 	return (0);
 }
 
@@ -50,7 +53,7 @@ int		ft_remove(t_struct *global, int ctetro)
 {
 	int		tmp;
 
-	tmp = global->i;
+	tmp = 0;
 	while (global->mapmax[tmp] != '\0')
 	{
 		if (global->mapmax[tmp] == 'A' + ctetro)
@@ -60,84 +63,88 @@ int		ft_remove(t_struct *global, int ctetro)
 	return (0);
 }
 
-int		ft_place(t_struct *global, int ctetro)
+int		ft_place(t_struct *global, int ctetro, int i)
 {
 	int		tmp;
+	int		x;
 
-	tmp = global->i;
-	global->x = 0;
-	while (global->x <= 3)
+	x = 0;
+	tmp = i;
+	while (x <= 3)
 	{
 		global->mapmax[tmp] = 'A' + ctetro;
-		tmp = tmp + global->tab[global->y][global->x];
-		global->x++;
+		tmp = tmp + global->tab[ctetro][x];
+		x++;
 	}
 	return (0);
 }
 
-int		ft_isplacable(t_struct *global)
+int		ft_isplacable(t_struct *global, int ctetro, int i)
 {	
+	int		x;
 	int		tmp;
 
-	global->i = 0;
-	while (global->mapmax[global->i] != '\0')
+	x = 0;
+	if (global->mapmax[i] == '.')
 	{
-		if (global->mapmax[global->i] == '.')
+		x = 0;
+		tmp = global->i;
+		while (global->mapmax[tmp] == '.' && x <= 2 &&
+				tmp + global->tab[ctetro][x] < global->mapopti)
 		{
-			global->x = 0;
-			tmp = global->i;
-			while (global->mapmax[tmp] == '.' && global->x <= 2 &&
-					tmp + global->tab[global->y][global->x] < global->mapopti)
-			{
-				tmp = tmp + global->tab[global->y][global->x];
-				global->x++;
-			}
-			if (global->x == 3)
-				return (0);
+			tmp = tmp + global->tab[ctetro][x];
+			x++;
 		}
-		global->i++;
+		if (x == 3)
+			return (0);
 	}
 	return (1);
 }
 
 void	ft_adaptcoordo(t_struct *global)
 {
-	global->y = 0;
-	while (global->y < global->nbrtetro)
+	int		x;
+	int		y;
+
+	y = 0;
+	while (y < global->nbrtetro)
 	{
-		global->x = 0;
-		while (global->x <= 2)
+		x = 0;
+		while (x <= 2)
 		{
-			if (global->tab[global->y][global->x] == 1)
-				global->x++;
+			if (global->tab[y][x] == 1)
+				x++;
 			else
 			{
-				global->tab[global->y][global->x] =
-				global->tab[global->y][global->x] - (5 - (global->power + 1));
-				global->x++;
+				global->tab[y][x] = 
+				global->tab[y][x] - (global->col - global->power);
+				x++;
 			}
 		}
-		global->y++;
+		y++;
 	}
+	global->col = global->power;
 }
 
 void	ft_mapopti_filling(t_struct *global)
 {
-	global->x = 0;
+	int		x;
+
+	x = 0;
 	global->imap = 0;
 	while (global->imap < global->mapopti)
 	{
-		if (global->x == global->power)
+		if (x == global->power)
 		{
 			global->mapmax[global->imap] = '\n';
 			global->imap++;
-			global->x = 0;
+			x = 0;
 		}
 		else
 		{
 			global->mapmax[global->imap] = '.';
 			global->imap++;
-			global->x++;
+			x++;
 		}
 		global->mapmax[global->imap] = '\0';
 	}
@@ -145,47 +152,47 @@ void	ft_mapopti_filling(t_struct *global)
 
 int		ft_recursive(t_struct *global, int ctetro)
 {
-	ft_affinfos(global);
-	global->x = 0;
-	global->y = 0;
-	while (global->y < global->nbrtetro)
-	{
-		while (global->x < 3)
+	int		i;
+
+	i = -1;
+	while (global->mapmax[++i] != '\0')
+	{	
+		if (ft_isplacable(global, ctetro, i) == 0)
 		{
-			if (ft_isplacable(global) == 0)
-			{
-				ft_place(global, ctetro);
-				if (ctetro + 1 == global->nbrtetro)
-					return (ft_putstr(global->mapmax));
-				else if (ft_recursive(global, ctetro + 1) == 1)
-					return (1);
-				else
-					ft_remove(global, ctetro);
-			}
-			global->x++;
+			ft_place(global, ctetro, i);				
+			if (ctetro + 1 == global->nbrtetro)
+				return (ft_putstr(global->mapmax));
+			else if (ft_recursive(global, ctetro + 1) == 0)
+				return (0);
+			else
+				ft_remove(global, ctetro);
 		}
-		global->y++;
-		global->x = 0;
+		i = -1;
 	}
-	return (0);
+	return (1);
 }
 
 void	ft_resolve(t_struct *global)
 {
+	global->i = 0;
+	global->col = 4;
 	if (global->power == 0)
 		while (global->power * global->power < global->nbrtetro * 4)
 			global->power++;
-		global->mapopti = global->power * global->power + global->power;
-		ft_mapopti_filling(global);
-		ft_adaptcoordo(global);
+	global->mapopti = global->power * global->power + global->power;
+	ft_mapopti_filling(global);
+	ft_adaptcoordo(global);
 	while (global->power > 0)
-	{		
+	{	
+		global->i = 0;
 		global->mapopti = global-> power * global->power + global->power;
 		ft_mapopti_filling(global);
 		ft_adaptcoordo(global);
-		if (ft_recursive(global, 0) == 0)
+		ft_affinfos(global);
+		if (ft_recursive(global, 0) == 1)
 			global->power++;
 		else
 			global->power = 0;
 	}
+	//ft_putstr(global->mapmax);
 }
